@@ -13,7 +13,7 @@ def post_message(token, channel, text):
         headers={"Authorization": "Bearer "+token},
         data={"channel": channel,"text": text}
     )
-def get_target_price(ticker, k):  #ticker어떤 코인인지
+def get_target_price(ticker, k):
     """변동성 돌파 전략으로 매수 목표가 조회"""
     df = pyupbit.get_ohlcv(ticker, interval="day", count=2)
     target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * k
@@ -37,10 +37,8 @@ def get_best_ticker(k=0.5):
 
         if (bestc[0] < df.iloc[-1,-1]) :
             bestc = [(df.iloc[-1,-1]), str(t),k]
-        #print(str(df.iloc[-1,-1])+" "+str(t))
     
     post_message(myToken,"#crypto", "지금 매수할 코인은 : " + str(bestc[1]) + "\n해당 코인의 수익률은 대략 : " + str(bestc[0]))
-
     post_message(myToken,"#crypto", "코인의 현재가는 : " + str(get_current_price(bestc[1])) + "\n해당 코인의 목표매수가는 : " +
      str(get_target_price(bestc[1],0.5)))
     return bestc
@@ -60,25 +58,18 @@ def get_best_k(coin="KRW-BTC"):
             interest = df.iloc[-1,-1]
             bestK=k
     post_message(myToken,"#crypto", "지금 매수할 코인은 : " + coin + "\n해당 코인의 수익률은 대략 : " + str(interest))
-
     post_message(myToken,"#crypto", "코인의 현재가는 : " + str(pyupbit.get_current_price(coin)) + "\n해당 코인의 목표매수가는 : " +
      str(get_target_price(coin,k)))
-
     return bestK
 
 
-
 def bestCoin():
-#제일 수익률이 높은 코인 + k값 + 정확한 수익률 구하는 코드
+#해당 코인의 수익률 + 제일 수익률이 높은 코인 + k값 구하는 코드
     bestc =[0,'NONE',0]
-    avga=[]
     for k in np.arange(0.5, 1.0, 0.1): #k는 0.5부터 1.0까지 0.1씩 추가한다 0.5, 0.6, 0.7, 0.8, 0.9
-        #print ("\nk = " + str(k) + "\n")
         ticker= get_tickers("KRW") #모든 코인종류를 불러온다
-        #print(ticker)
         for t in ticker:
-            #
-            df = pyupbit.get_ohlcv(t,count = 15) #
+            df = pyupbit.get_ohlcv(t,count = 15) 
             time.sleep(0.05)
             df['range'] = (df['high'] - df['low']) * k
             df['target'] = df['open'] + df['range'].shift(1)
@@ -89,24 +80,7 @@ def bestCoin():
             #cumprod- 누적 곱 계산 => 누적 수익률 
             df['hpr'] = df['ror'].cumprod()
             
-            #print(df)
-            
-            #백테스트 코드: 즉 수익률 구하는 코드
-
-            #리스트, iloc함수, 리스트append
             if (bestc[0] < df.iloc[-1,-1]) :
                 bestc = [(df.iloc[-1,-1]), str(t),k]
-            avga.append(df.iloc[-1,-1])
-            
-            #print(str(df.iloc[-1,-1])+" "+str(t))
+           
     return bestc
-#bestc = bestCoin()
-#print("\n수익률은 : " + str(bestc[0]) + "\n코인은 : " + str(bestc[1]) + "\nk = " + str(bestc[2]))
-
-#best_ticker = bestc[1]
-#print(type(best_ticker))
-#print("The Best Ticker is : " + str(best_ticker) + "\n")
-#모든 코인의 수익률 평균
-#avga_np = np.array(avga)
-#avga_np_result = np.mean(avga_np)
-#print(avga_np_result)
