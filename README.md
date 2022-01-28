@@ -19,3 +19,10 @@
 **파이썬을 이용한 비트코인 자동매매 (개정판)**
 
 <https://github.com/sharebook-kr/book-cryptocurrency>
+
+
+
+
+**[주의사항**]투자책임은 본인한테 있습니다. 해당 프로그램을 얼마든 참조하셔도 좋지만 설명을 자세히 보고 신중히 선택하세요.
+{: .btn .btn--danger}
+
