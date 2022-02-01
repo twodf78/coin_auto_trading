@@ -136,19 +136,69 @@
 
 ## 3. 준비 과정
 
-- ​	Anaconda
 
-  먼저 아나콘다를 설치해줍니다.
 
-  
+- anaconda - python 3.8버전 이하 설치
+
+  anaconda가 업데이트 되면서 fbprophet library를 지원하지 않기 시작했습니다. 그래서 어쩔 수 없이 downgrade를 시킨 후 진행을 해야합니다. anaconda를 설치 후 fbprophet library설치가 실패 시 아래와 같이 downgrade를 진행시켜주면 됩니다.
+
+  ```git
+  conda create -n downgrade python=3.8 anaconda
+    
+  conda activate downgrade
+  ```
+
+  fbprophet 외에도 pyupbit, schedule 등 라이브러리를 설치해줘야 하는데 콘솔창에서 이렇게 진행해주면 됩니다.
+
+  ```git
+  pip install pyupbit
+  pip install schedule
+  conda install -c conda-forge fbprophet
+  ```
+
+
 
 ## 4. 실행 과정
 
-```python
-python main.py
-```
-
-먼저 mai
 
 
+- main.py 실행
+
+  ```git
+  python main.py
+  ```
+
+  main.py를 실행합니다. 실행한 후 출력되는 instructions에 따라 코인 자동매매 프로그램을 실행시켜주면 됩니다.
+
+  - 1.  코인 매수/매도 전략 선택
+
+  - 2. 코인 종류 선택 
+
+       - 직접 선택일 경우:
+
+         ```
+         print(pyupbit.get_tickers("KRW"))
+         ```
+
+         위 코드의 실행 결과:
+
+         ![image-20220201234240137](../images/README/image-20220201234240137.png)
+
+         위 출력 결과 중 하나의 코인을 고르면 됩니다.
+
+         **(KRW-코인약자) 형식으로 쓰셔야 합니다**
+
+       - 자동 선택일 경우:
+
+         과거 데이터 기반으로 수익률이 제일 높은 코인을 가져옵니다.
+
+  - 3. k값 선택
+
+       - 직접 선택일 경우:
+
+         0.1~0.9값 중 하나의 값을 직접 선택하시면 됩니다.
+
+       - 자동 선택일 경우:
+
+         0.5~0.9값 중 하나의 코인에 대해서 최고의 k값이 선정됩니다.
 
