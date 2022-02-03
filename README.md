@@ -202,3 +202,67 @@
 
          0.5~0.9값 중 하나의 코인에 대해서 최고의 k값이 선정됩니다.
 
+
+
+## 5. 상세 세팅 - 커스텀마이징
+
+
+
+- ### 코인 수익률 자동 계산시 k값
+
+  현재는 k값을 설정해주지 않고 제일 높은 수익률의 코인을 구할 때, k값을 0.7일 때의 상황으로 상정합니다.
+
+  만약 기본적으로 제일 높은 수익률의 코인을 구할 때 k값이 0.7이 아닌 다른 값을 원한다면, 
+
+  **calBestCoinAndK.py** 의 **get_best_ticker()** 함수 정의 부분에서 k변수 기본값을 변경해주면 됩니다.
+
+  ```python
+  def get_best_ticker(k=0.7):
+  ```
+
+  이 부분에서 k에 원하시는 다른 값으로 할당해주면 됩니다.
+
+  
+
+- ### 퍼센트 매수/ 매도 전략
+
+  - 매수목표가 설정
+
+    현재는 이 전략에서 매수목표가는 매수평균가의 80%로 설정이 되어있습니다.
+
+    즉 20프로 손실이 나면 추가매수를 하는 것입니다.
+
+    만약 다른 값을 원한다면, **autotradeVolatility.py**의 아래 코드에서 다른 값을 할당해주면 됩니다.
+
+    ```pyt
+    target_price =  np.where(upbit.get_avg_buy_price(coin)!=0,
+                             upbit.get_avg_buy_price(coin)*0.8,
+                             get_target_price(coin,k))
+    ```
+
+    위 코드에서 
+
+    upbit.get_avg_buy_price(coin)*0.8 부분을
+
+    upbit.get_avg_buy_price(coin)*0.9 (10프로 손실 시 추가 매수)등 다른 값으로 변경해주면 됩니다.
+
+  - 매도목표가 설정
+
+    현재는 이 전략에서 매도목표가는 매수평균가의 105%로 설정이 되어있습니다.
+
+    즉 5프로 수익이 나면 매도를 하는 것입니다.
+
+    만약 수익률을 변경하고 싶으시면, **autotradeVolatility.py**의 아래 코드에서 다른 값을 할당해주면 됩니다.
+
+    ```python
+    #만약 평균매수가의 1.05프로가 현재가보다 낮을 경우(5프로 수익) 매도
+    if upbit.get_avg_buy_price(coin)!=0 and upbit.get_avg_buy_price(coin)*1.05 <= current_price:
+    ```
+
+    위 코드에서 
+
+    upbit.get_avg_buy_price(coin)*1.05 부분을
+
+    upbit.get_avg_buy_price(coin)*1.1 (10프로 수익 시 매도)등 다른 값으로 변경해주면 됩니다.
+
+    
