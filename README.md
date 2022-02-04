@@ -232,7 +232,7 @@
 
     즉 20프로 손실이 나면 추가매수를 하는 것입니다.
 
-    만약 다른 값을 원한다면, **autotradeVolatility.py**의 아래 코드에서 다른 값을 할당해주면 됩니다.
+    만약 다른 값을 원한다면, **autotradePercentage.py**의 아래 코드에서 다른 값을 할당해주면 됩니다.
 
     ```pyt
     target_price =  np.where(upbit.get_avg_buy_price(coin)!=0,
@@ -252,7 +252,7 @@
 
     즉 5프로 수익이 나면 매도를 하는 것입니다.
 
-    만약 수익률을 변경하고 싶으시면, **autotradeVolatility.py**의 아래 코드에서 다른 값을 할당해주면 됩니다.
+    만약 수익률을 변경하고 싶으시면, **autotradePercentage.py**의 아래 코드에서 다른 값을 할당해주면 됩니다.
 
     ```python
     #만약 평균매수가의 1.05프로가 현재가보다 낮을 경우(5프로 수익) 매도
@@ -265,4 +265,19 @@
 
     upbit.get_avg_buy_price(coin)*1.1 (10프로 수익 시 매도)등 다른 값으로 변경해주면 됩니다.
 
-    
+  - 처음 매수 시 매수금액 설정
+
+    현재는 이 전략에서 매수금액이 처음 매수 시 보유원화*(1/8)로 설정이 되어있습니다.
+
+    만약 매수 금액을 변경하고 싶으시면,
+
+    **autotradePercentage.py**의 아래 코드에서 다른 값을 할당해주면 됩니다.
+
+    ```python
+    buy_result = upbit.buy_market_order(coin, krw*1/8)
+    post_message(myToken,"#crypto", "매수 완료. 내용 : " + str(buy_result))
+    ```
+
+    위 코드에서
+
+    1/8 부분을 다른 퍼센트로 바꿔주면 됩니다.
